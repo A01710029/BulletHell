@@ -5,17 +5,21 @@ using UnityEngine;
 public class BulletController : MonoBehaviour
 {
     public float speed = 10f;
+    public float launch = 20f;
+    private Rigidbody rb; 
     
     // Start is called before the first frame update
     void Start()
     {
+        rb = GetComponent<Rigidbody>();
+        LaunchBullet();
         Destroy(gameObject, 2.5f);
     }
 
-    // Update is called once per frame
-    void Update()
+     void LaunchBullet()
     {
-        transform.Translate(Vector3.forward * speed * Time.deltaTime);
+        // Apply force in the forward direction
+        rb.AddForce(transform.forward * launch, ForceMode.Impulse);
     }
 
     void OnDestroy()
