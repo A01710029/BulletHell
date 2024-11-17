@@ -29,7 +29,7 @@ public class BulletSpawner : MonoBehaviour
         {
             if (Time.time >= timer)
             {
-                SpawnSprinklerShot();
+                SpawnStraightShot();
                 timer = interval;
             }
         }
