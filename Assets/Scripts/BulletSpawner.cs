@@ -26,12 +26,14 @@ public class BulletSpawner : MonoBehaviour
 
         bulletPatterns = new BulletPattern[]
         {
-            SpawnStraightShot,
-            SpawnFanShot,
+            /*SpawnStraightShot, //0
+            SpawnFanShot, // 1
+            SpawnWaveShot, // 2
+            SpawnSprinklerShot, // 3
+            SpawnSpinStraightShot, // 4
+            SpawnSpinFanShot // 5*/
             SpawnWaveShot,
-            SpawnSprinklerShot,
-            SpawnSpinStraightShot,
-            SpawnSpinFanShot
+            SpawnWaveShot
         };
     }
 

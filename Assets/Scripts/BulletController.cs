@@ -35,7 +35,18 @@ public class BulletController : MonoBehaviour
         if (isWave)
         {
             float waveMovement = Mathf.Sin(Time.time * waveFrequency) * 20f;
-            rb.velocity = new Vector3(waveMovement, 0, rb.velocity.z);
+
+            // Definir movimiento hacia adelante 
+            Vector3 currentVelocity = rb.velocity;
+            
+            // Agregar movimiento de ola al eje x
+            currentVelocity.x = waveMovement;
+
+            // Mantener el movimiento hacia enfrente
+            currentVelocity.z = currentVelocity.z;
+
+            // Aplicar a Rigidbody
+            rb.velocity = currentVelocity;
         }
     }
 }
