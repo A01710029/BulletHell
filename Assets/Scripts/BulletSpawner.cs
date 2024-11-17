@@ -64,7 +64,7 @@ public class BulletSpawner : MonoBehaviour
         // Seleccionar patrón aleatorio sin repetir el anterior
         do
         {
-            currentPattern = Random.Range(0, bulletPatterns.Length);
+            currentPattern = Random.Range(1, bulletPatterns.Length);
         } while (currentPattern == previousPattern);
 
         Debug.Log($"Cambio al patrón {currentPattern}");

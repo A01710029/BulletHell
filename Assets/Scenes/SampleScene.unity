@@ -890,7 +890,7 @@ AudioSource:
   m_Volume: 1
   m_Pitch: 1
   Loop: 1
-  Mute: 1
+  Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
   Priority: 128
@@ -1367,7 +1367,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawner: {fileID: 1124062285}
-  switchInterval: 5
+  standardSwitchInterval: 15
+  startAttackInterval: 7
 --- !u!4 &1355744159
 Transform:
   m_ObjectHideFlags: 0
@@ -1417,7 +1418,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -475, y: 177}
+  m_AnchoredPosition: {x: -686, y: 341}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1479190524
@@ -2214,10 +2215,10 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1016506646}
+  - {fileID: 1355744159}
   - {fileID: 3381866068402726726}
   - {fileID: 1635851731}
   - {fileID: 1514177714}
   - {fileID: 112054384}
   - {fileID: 284916209}
   - {fileID: 521321112}
-  - {fileID: 1355744159}
