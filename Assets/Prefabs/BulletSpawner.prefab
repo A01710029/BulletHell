@@ -45,4 +45,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bullet: {fileID: 4961387581765903451, guid: 53e3073a4d13d9b44ae6007522d28fd9, type: 3}
-  interval: 10
+  interval: 1
+  rotationSpeed: 30
+  rotationRange: 45

@@ -7,23 +7,35 @@ public class BulletController : MonoBehaviour
     public float speed = 10f;
     public float launch = 20f;
     private Rigidbody rb; 
+    private float waveFrequency;
+    private bool isWave = false;
     
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         LaunchBullet();
-        Destroy(gameObject, 2.5f);
+        Destroy(gameObject, 4f);
     }
 
-     void LaunchBullet()
+    void LaunchBullet()
     {
-        // Apply force in the forward direction
+        // Para que las balas sean "lanzadas" con física hacia adelante
         rb.AddForce(transform.forward * launch, ForceMode.Impulse);
     }
 
-    void OnDestroy()
+    public void SetWaveMovement(float frequency)
     {
-        Debug.Log("Bullet Destroyed");
+        isWave = true;
+        waveFrequency = frequency;
+    }
+
+    void Update()
+    {
+        if (isWave)
+        {
+            float waveMovement = Mathf.Sin(Time.time * waveFrequency) * 20f;
+            rb.velocity = new Vector3(waveMovement, 0, rb.velocity.z);
+        }
     }
 }
