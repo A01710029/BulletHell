@@ -13,11 +13,26 @@ public class BulletSpawner : MonoBehaviour
     private float currentRotation = 0f;
     private bool rotatingClockwise = true;
     private bool isRotating = false;
+
+    // Para manejar cambios de patrón
+    public delegate void BulletPattern();
+    public BulletPattern[] bulletPatterns;
+    private int currentPattern = 0; // Representar patrones como lista con index
     
     // Start is called before the first frame update
     void Start()
     {
         timer = interval;
+
+        bulletPatterns = new BulletPattern[]
+        {
+            SpawnStraightShot,
+            SpawnFanShot,
+            SpawnWaveShot,
+            SpawnSprinklerShot,
+            SpawnSpinStraightShot,
+            SpawnSpinFanShot
+        };
     }
 
     // Update is called once per frame
@@ -29,7 +44,7 @@ public class BulletSpawner : MonoBehaviour
         {
             if (Time.time >= timer)
             {
-                SpawnStraightShot();
+                bulletPatterns[currentPattern]?.Invoke();
                 timer = interval;
             }
         }
@@ -37,16 +52,35 @@ public class BulletSpawner : MonoBehaviour
         if(isRotating)
         {
             RotateLauncher();
+        } else {
+            transform.parent.localRotation = Quaternion.Euler(0f, 0f, 0f); // Resetear posición
         }
+    }
+
+    public void SwitchPattern()
+    {
+        int previousPattern = currentPattern;
+
+        // Seleccionar patrón aleatorio sin repetir el anterior
+        do
+        {
+            currentPattern = Random.Range(0, bulletPatterns.Length);
+        } while (currentPattern == previousPattern);
+
+        Debug.Log($"Cambio al patrón {currentPattern}");
     }
 
     void SpawnStraightShot()
     {
+        isRotating = false;
+
         Instantiate(bullet, transform.position, transform.rotation);
     }
 
     void SpawnFanShot()
     {
+        isRotating = false;
+        
         for (int i = -5; i <= 5; i++)
         {
             GameObject fanBullet = Instantiate(bullet, transform.position, transform.rotation);
@@ -55,9 +89,14 @@ public class BulletSpawner : MonoBehaviour
 
     void SpawnWaveShot()
     { 
-        GameObject waveBullet = Instantiate(bullet, transform.position, transform.rotation);
-        float waveFrequency = 10f; 
-        waveBullet.GetComponent<BulletController>().SetWaveMovement(waveFrequency);
+        isRotating = true;
+
+        for (int i = -3; i <= 3; i++)
+        {
+            GameObject waveBullet = Instantiate(bullet, transform.position, transform.rotation);
+            float waveFrequency = 10f; 
+            waveBullet.GetComponent<BulletController>().SetWaveMovement(waveFrequency);
+        }
     }
 
     void SpawnSprinklerShot()
@@ -70,10 +109,21 @@ public class BulletSpawner : MonoBehaviour
         }
     }
 
-    public void StopSprinklerShot()
+    void SpawnSpinStraightShot()
     {
-        isRotating = false;
-        transform.parent.localRotation = Quaternion.Euler(0f, 0f, 0f); // Resetear posición
+        isRotating = true;
+
+        Instantiate(bullet, transform.position, transform.rotation);
+    }
+
+    void SpawnSpinFanShot()
+    {
+        isRotating = true;
+        
+        for (int i = -5; i <= 5; i++)
+        {
+            GameObject fanBullet = Instantiate(bullet, transform.position, transform.rotation);
+        }
     }
 
     void RotateLauncher()
