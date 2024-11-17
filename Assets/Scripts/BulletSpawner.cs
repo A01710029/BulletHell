@@ -49,14 +49,13 @@ public class BulletSpawner : MonoBehaviour
     {
         for (int i = -5; i <= 5; i++)
         {
-            GameObject fanBullet = Instantiate(bullet, transform.position, Quaternion.identity);
-            fanBullet.transform.rotation = Quaternion.Euler(0, i * 60, 0); 
+            GameObject fanBullet = Instantiate(bullet, transform.position, transform.rotation);
         }
     }
 
     void SpawnWaveShot()
-    {
-        GameObject waveBullet = Instantiate(bullet, transform.position, Quaternion.identity);
+    { 
+        GameObject waveBullet = Instantiate(bullet, transform.position, transform.rotation);
         float waveFrequency = 10f; 
         waveBullet.GetComponent<BulletController>().SetWaveMovement(waveFrequency);
     }
