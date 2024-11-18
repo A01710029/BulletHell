@@ -13,6 +13,8 @@ public class BulletSpawner : MonoBehaviour
     private float currentRotation = 0f;
     private bool rotatingClockwise = true;
     private bool isRotating = false;
+    private bool isWaveLeft = true;
+    private bool isTilted = false;
 
     // Para manejar cambios de patrón
     public delegate void BulletPattern();
@@ -26,14 +28,12 @@ public class BulletSpawner : MonoBehaviour
 
         bulletPatterns = new BulletPattern[]
         {
-            /*SpawnStraightShot, //0
+            SpawnStraightShot, //0
             SpawnFanShot, // 1
             SpawnWaveShot, // 2
             SpawnSprinklerShot, // 3
             SpawnSpinStraightShot, // 4
-            SpawnSpinFanShot // 5*/
-            SpawnWaveShot,
-            SpawnWaveShot
+            SpawnSpinFanShot // 5
         };
     }
 
@@ -54,7 +54,16 @@ public class BulletSpawner : MonoBehaviour
         if(isRotating)
         {
             RotateLauncher();
-        } else {
+        } 
+       
+
+        if(isTilted)
+        {
+            TiltLauncher();
+        } 
+
+        if(!isRotating & !isTilted)
+        {
             transform.parent.localRotation = Quaternion.Euler(0f, 0f, 0f); // Resetear posición
         }
     }
@@ -75,6 +84,7 @@ public class BulletSpawner : MonoBehaviour
     void SpawnStraightShot()
     {
         isRotating = false;
+        isTilted = false;
 
         Instantiate(bullet, transform.position, transform.rotation);
     }
@@ -82,16 +92,28 @@ public class BulletSpawner : MonoBehaviour
     void SpawnFanShot()
     {
         isRotating = false;
+        isTilted = false;
+
+        float angleStep = 10f; // Ajustar ángulo entre las balas
+        float leftAngle = isWaveLeft ? -5 * angleStep : 5 * angleStep; // Ángulo izquierdo
+        float rightAngle = isWaveLeft ? 5 * angleStep : -5 * angleStep; // Ángulo derecho
         
         for (int i = -5; i <= 5; i++)
         {
-            GameObject fanBullet = Instantiate(bullet, transform.position, transform.rotation);
+            float angle = leftAngle + (i * angleStep);
+            
+             Quaternion bulletRotation = Quaternion.Euler(0, angle, 0) * transform.rotation;
+
+             GameObject fanBullet = Instantiate(bullet, transform.position, bulletRotation);
         }
+
+        isWaveLeft = !isWaveLeft;
     }
 
     void SpawnWaveShot()
     { 
-        isRotating = true;
+        isRotating = false;
+        isTilted = true;
 
         for (int i = -3; i <= 3; i++)
         {
@@ -103,9 +125,10 @@ public class BulletSpawner : MonoBehaviour
 
     void SpawnSprinklerShot()
     {
-        isRotating = true;
+        isRotating = false;
+        isTilted = true;
 
-        for (int i = -1; i <= 1; i++)
+        for (int i = -2; i <= 2; i++)
         {
             GameObject sprinklerBullet = Instantiate(bullet, transform.position, transform.rotation); 
         }
@@ -114,6 +137,7 @@ public class BulletSpawner : MonoBehaviour
     void SpawnSpinStraightShot()
     {
         isRotating = true;
+        isTilted = false;
 
         Instantiate(bullet, transform.position, transform.rotation);
     }
@@ -121,6 +145,7 @@ public class BulletSpawner : MonoBehaviour
     void SpawnSpinFanShot()
     {
         isRotating = true;
+        isTilted = false;
         
         for (int i = -5; i <= 5; i++)
         {
@@ -151,5 +176,14 @@ public class BulletSpawner : MonoBehaviour
 
         // Rotar objeto padre (Tennis Machine)
         transform.parent.localRotation = Quaternion.Euler(0f, currentRotation, 0f);
+    }
+
+    void TiltLauncher()
+    {
+        // Ajustar ángulo de lanzamiento (y)
+        float verticalTilt = Mathf.Cos(Time.time * 3f) * 15f;
+        
+        // Rotar objeto padre (Tennis Machine)
+        transform.parent.localRotation = Quaternion.Euler(verticalTilt, 0f, 0f);
     }
 }
