@@ -181,7 +181,7 @@ public class BulletSpawner : MonoBehaviour
     void TiltLauncher()
     {
         // Ajustar ángulo de lanzamiento (y)
-        float verticalTilt = Mathf.Cos(Time.time * 3f) * 15f;
+        float verticalTilt = Mathf.Cos(Time.time * 3f) * 15f + 10f;
         
         // Rotar objeto padre (Tennis Machine)
         transform.parent.localRotation = Quaternion.Euler(verticalTilt, 0f, 0f);
